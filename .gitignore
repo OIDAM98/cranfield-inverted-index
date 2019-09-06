@@ -1,6 +1,7 @@
 # metals (VSCode) specific
 .bloop/
 .metals/
+.vscode/
 
 *.class
 *.log
