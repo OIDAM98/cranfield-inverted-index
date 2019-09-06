@@ -28,8 +28,10 @@
 %----------------------------------------------------------------------------------------
 
 \title{LIS4031: Project \#1} % Title of the assignment
+\title{Boolean Retrieval Model} % Title of the assignment
 
-\author{Hola\\ \texttt{mireya.paredes@udlap.mx}} % Author name and email address
+\author{Dulio Paolo Caggiano Amand\\ \texttt{dulio.caggianoad@udlap.mx}} % Author name and email address
+\author{Oscar Ivan de Alva Martinez\\ \texttt{oscar.dealvamez@udlap.mx}} % Author name and email address
 
 \date{Universidad de las Am\'ericas  Puebla --- \today} % University, school and/or department name(s) and a date
 
@@ -45,17 +47,14 @@
 
 \section*{Introduction} % Unnumbered section
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent porttitor arcu luctus, imperdiet urna iaculis, mattis eros. Pellentesque iaculis odio vel nisl ullamcorper, nec faucibus ipsum molestie. Sed dictum nisl non aliquet porttitor. Etiam vulputate arcu dignissim, finibus sem et, viverra nisl. Aenean luctus congue massa, ut laoreet metus ornare in. Nunc fermentum nisi imperdiet lectus tincidunt vestibulum at ac elit. Nulla mattis nisl eu malesuada suscipit.
+In this practice, a research and development focused on the boolean information retrieval model was carried out to define the basic concepts of a retrieval model. Through the development of this project, a dictionary and a posting list were used to implement an inverted index based on the Cranfield collection.
+
+For the implementation of this project, the programming language Scala was used because it provides a concise notation that allows the creation of a Domain Specific Language (DSL) for the ability to solve the problem. Also, Scala has a tight compatibility and interoperability with Java, that allows to take advantage of both the JVM and the libraries of Java. Furthermore, its strict type system has the advantage of allowing the creation of specific types that model the solution of this problem.
 
 % Math equation/formula
 \begin{equation}
-	Expr ::= Term (\text{'OR'} Term)* \\
-	Term ::= Factor (\text{'AND'} Factor)* \\
-	Factor ::= [\text{'NOT'}] (Word | \text{'('} Expr \text{')'}) \\
-	Word ::= [a-zA-Z]\\
+	I = \int_{a}^{b} f(x) \; \text{d}x.
 \end{equation}
-
-Aliquam arcu turpis, ultrices sed luctus ac, vehicula id metus. Morbi eu feugiat velit, et tempus augue. Proin ac mattis tortor. Donec tincidunt, ante rhoncus luctus semper, arcu lorem lobortis justo, nec convallis ante quam quis lectus. Aenean tincidunt sodales massa, et hendrerit tellus mattis ac. Sed non pretium nibh. Donec cursus maximus luctus. Vivamus lobortis eros et massa porta porttitor.
 
 \begin{info} % Information block
 	This is an interesting piece of information, to which the reader should pay special attention. Fusce varius orci ac magna dapibus porttitor. In tempor leo a neque bibendum sollicitudin. Nulla pretium fermentum nisi, eget sodales magna facilisis eu. Praesent aliquet nulla ut bibendum lacinia. Donec vel mauris vulputate, commodo ligula ut, egestas orci. Suspendisse commodo odio sed hendrerit lobortis. Donec finibus eros erat, vel ornare enim mattis et.
@@ -65,17 +64,23 @@ Aliquam arcu turpis, ultrices sed luctus ac, vehicula id metus. Morbi eu feugiat
 %	PROBLEM 1
 %----------------------------------------------------------------------------------------
 
-\section{Problem title} % Numbered section
+\section{Boolean Retrieval Model} % Numbered section
 
-In hac habitasse platea dictumst. Curabitur mattis elit sit amet justo luctus vestibulum. In hac habitasse platea dictumst. Pellentesque lobortis justo enim, a condimentum massa tempor eu. Ut quis nulla a quam pretium eleifend nec eu nisl. Nam cursus porttitor eros, sed luctus ligula convallis quis. Nam convallis, ligula in auctor euismod, ligula mauris fringilla tellus, et egestas mauris odio eget diam. Praesent sodales in ipsum eu dictum.
+The cranfield collection is based on three main components, the first component is a collection of documents which contains information from different investigations. The second component is the one that contains a set of specific queries for the aforementioned data collection and the third component contains the relevance judgments which are all the factors that are taken to categorize a document as relevant.
+
+The documents contained in the cranfield collection generally maintain a structure, where the information contained in the document is specified by means of headings, some examples can be it ".I" to describe the documents ID or ".A" to list the authors. 
 
 %------------------------------------------------
 
-\subsection{Theoretical viewpoint}
+\subsection{Parsing the collection}
 
-Maecenas consectetur metus at tellus finibus condimentum. Proin arcu lectus, ultrices non tincidunt et, tincidunt ut quam. Integer luctus posuere est, non maximus ante dignissim quis. Nunc a cursus erat. Curabitur suscipit nibh in tincidunt sagittis. Nam malesuada vestibulum quam id gravida. Proin ut dapibus velit. Vestibulum eget quam quis ipsum semper convallis. Duis consectetur nibh ac diam dignissim, id condimentum enim dictum. Nam aliquet ligula eu magna pellentesque, nec sagittis leo lobortis. Aenean tincidunt dignissim egestas. Morbi efficitur risus ante, id tincidunt odio pulvinar vitae.
+To transform the words found in the documents, a dedicated parser was created to perform the tokenization of these. This parser has the functionality of creating tokens from the headers established within each document, which allows establishing metadata, in the form of classes, for the words found. 
 
-Curabitur tempus hendrerit nulla. Donec faucibus lobortis nibh pharetra sagittis. Sed magna sem, posuere eget sem vitae, finibus consequat libero. Cras aliquet sagittis erat ut semper. Aenean vel enim ipsum. Fusce ut felis at eros sagittis bibendum mollis lobortis libero. Donec laoreet nisl vel risus lacinia elementum non nec lacus. Nullam luctus, nulla volutpat ultricies ultrices, quam massa placerat augue, ut fringilla urna lectus nec nibh. Vestibulum efficitur condimentum orci a semper. Pellentesque ut metus pretium lacus maximus semper. Sed tellus augue, consectetur rhoncus eleifend vel, imperdiet nec turpis. Nulla ligula ante, malesuada quis orci a, ultricies blandit elit.
+Also, specific classes were created for the documentation of words and metadata, and a class was established to store the content of a document. These classes represent the different types of header found within the document, these are: document number, author, title, affiliation, and abstract text.
+
+On the other hand, the internal structure of a document was established as a list of parsed headers. This is because the documents within the collection do not have a defined structure, which makes it difficult to represent them with only 3one. 
+
+In order to parse the words, the file was first divided into its documents, which are specified at the beginning with the .I header followed by the document number. This is to allow the identification of the words inside each document easier. Then, each document is divided into the sections previously mentioned, which are identified by the headings. A, .T, .B and .W along with the document number where they are located. Finally, these elements are stored within the Document class to indicate that a document from the collection was parsed along with its contents. 
 
 % Numbered question, with subquestions in an enumerate environment
 \begin{question}
@@ -91,9 +96,11 @@ Curabitur tempus hendrerit nulla. Donec faucibus lobortis nibh pharetra sagittis
 	
 %------------------------------------------------
 
-\subsection{Algorithmic issues}
+\subsection{Inverted Index}
 
-In malesuada ullamcorper urna, sed dapibus diam sollicitudin non. Donec elit odio, accumsan ac nisl a, tempor imperdiet eros. Donec porta tortor eu risus consequat, a pharetra tortor tristique. Morbi sit amet laoreet erat. Morbi et luctus diam, quis porta ipsum. Quisque libero dolor, suscipit id facilisis eget, sodales volutpat dolor. Nullam vulputate interdum aliquam. Mauris id convallis erat, ut vehicula neque. Sed auctor nibh et elit fringilla, nec ultricies dui sollicitudin. Vestibulum vestibulum luctus metus venenatis facilisis. Suspendisse iaculis augue at vehicula ornare. Sed vel eros ut velit fermentum porttitor sed sed massa. Fusce venenatis, metus a rutrum sagittis, enim ex maximus velit, id semper nisi velit eu purus.
+The dictionary was implemented by using an inverted index which give mainly the advantage of access time once you search for a word. The keys used in the dictionary were all the different words found in the documents  and the values are divided in a tuple, with the first element representing the number of occurrences that the word has in all the processed documents and the second element is a set which contains the IDs of the documents in which the word is found, a set is used to avoid the repetition of IDs.
+
+Once the whole file is parsed and the words are tokenized, the list of tokens is processed element by element, adding them to the inverted index. When adding an element to the inverted index, if the index already have that word, the occurrence counter is increased and the document id is added to the set.
 
 \begin{center}
 	\begin{minipage}{0.5\linewidth} % Adjust the minipage width to accomodate for the length of algorithm lines
@@ -114,24 +121,39 @@ In malesuada ullamcorper urna, sed dapibus diam sollicitudin non. Donec elit odi
 	\end{minipage}
 \end{center}
 
-Fusce varius orci ac magna dapibus porttitor. In tempor leo a neque bibendum sollicitudin. Nulla pretium fermentum nisi, eget sodales magna facilisis eu. Praesent aliquet nulla ut bibendum lacinia. Donec vel mauris vulputate, commodo ligula ut, egestas orci. Suspendisse commodo odio sed hendrerit lobortis. Donec finibus eros erat, vel ornare enim mattis et.
+
+\subsection{Parsing the query}
+
+To parse the query that the user enters in the program, a free context grammar was used based on the grammar used to solve basic algebraic operations. This is because the operators dealing with the model function works the same as the basic mathematical operators of +, * and - of a scale. This grammar is as follows:
+
+\begin{align*}
+	Expr   & ::= Term (\text{'OR'} Term)*                           \\
+	Term   & ::= Factor (\text{'AND'} Factor)*                      \\
+	Factor & ::= [\text{'NOT'}] (Word | \text{'('} Expr \text{')'}) \\
+	Word   & ::= [a-zA-Z]
+\end{align*}
+
+This allows to be able to analyze a query through the precedence of the AND, OR and NOT operators, as well as the parentheses. To make the parsing of the query we used the library of Scala Parser Combinators, which allows us to represent in code a grammar free of context and program the cases of these. The parser is in charge of identifying the specified grammar cases and asking the Boolean Retrieval Model to carry out the specified operation. 
+
+\subsection{Boolean Retrieval Model}
+
+When the words are parsed inside the query, they are transformed into a BinaryArray class, which is an array of shorts of the size of the number of processed documents, which limits the data you can use in the array to 0 and 1 to represent in a binary way the occurrence of the words in the documents, representing with a 1 in the position i if the element is in the document i and if it is not found it will be represented with a 0. 
+
+After each word is represented as a BinaryArray, if the query contains the key words AND, OR or NOT, the corresponding binary operation is performed between two of the arrays, based on the precedence of operations previously defined in the parser of the query. The resulting array from performing the binary operations, will be the result of the query, described in the indexes where a 1 is maintained, as the ID of the document that is considered relevant for the search. 
+
 
 % Numbered question, with an optional title
 \begin{question}[\itshape (with optional title)]
 	In congue risus leo, in gravida enim viverra id. Donec eros mauris, bibendum vel dui at, tempor commodo augue. In vel lobortis lacus. Nam ornare ullamcorper mauris vel molestie. Maecenas vehicula ornare turpis, vitae fringilla orci consectetur vel. Nam pulvinar justo nec neque egestas tristique. Donec ac dolor at libero congue varius sed vitae lectus. Donec et tristique nulla, sit amet scelerisque orci. Maecenas a vestibulum lectus, vitae gravida nulla. Proin eget volutpat orci. Morbi eu aliquet turpis. Vivamus molestie urna quis tempor tristique. Proin hendrerit sem nec tempor sollicitudin.
 \end{question}
 
-Mauris interdum porttitor fringilla. Proin tincidunt sodales leo at ornare. Donec tempus magna non mauris gravida luctus. Cras vitae arcu vitae mauris eleifend scelerisque. Nam sem sapien, vulputate nec felis eu, blandit convallis risus. Pellentesque sollicitudin venenatis tincidunt. In et ipsum libero. Nullam tempor ligula a massa convallis pellentesque.
-
 %----------------------------------------------------------------------------------------
 %	PROBLEM 2
 %----------------------------------------------------------------------------------------
 
-\section{Implementation}
+\section{Conclusions}
 
-Proin lobortis efficitur dictum. Pellentesque vitae pharetra eros, quis dignissim magna. Sed tellus leo, semper non vestibulum vel, tincidunt eu mi. Aenean pretium ut velit sed facilisis. Ut placerat urna facilisis dolor suscipit vehicula. Ut ut auctor nunc. Nulla non massa eros. Proin rhoncus arcu odio, eu lobortis metus sollicitudin eu. Duis maximus ex dui, id bibendum diam dignissim id. Aliquam quis lorem lorem. Phasellus sagittis aliquet dolor, vulputate cursus dolor convallis vel. Suspendisse eu tellus feugiat, bibendum lectus quis, fermentum nunc. Nunc euismod condimentum magna nec bibendum. Curabitur elementum nibh eu sem cursus, eu aliquam leo rutrum. Sed bibendum augue sit amet pharetra ullamcorper. Aenean congue sit amet tortor vitae feugiat.
-
-In congue risus leo, in gravida enim viverra id. Donec eros mauris, bibendum vel dui at, tempor commodo augue. In vel lobortis lacus. Nam ornare ullamcorper mauris vel molestie. Maecenas vehicula ornare turpis, vitae fringilla orci consectetur vel. Nam pulvinar justo nec neque egestas tristique. Donec ac dolor at libero congue varius sed vitae lectus. Donec et tristique nulla, sit amet scelerisque orci. Maecenas a vestibulum lectus, vitae gravida nulla. Proin eget volutpat orci. Morbi eu aliquet turpis. Vivamus molestie urna quis tempor tristique. Proin hendrerit sem nec tempor sollicitudin.
+Through out the project, the steps for the creation of a retrieval model were identified and developed. In the same way, the impact of the data structures and the importance that they have within the development of a retrieval model were observed, finally the methods to parse of the documents and queries to obtain and process information from external sources with the implications that they entail were analyzed.
 
 % File contents
 \begin{file}[hello.py]
@@ -143,8 +165,6 @@ sys.stdout.write("Hello World!\n")
 \end{lstlisting}
 \end{file}
 
-Fusce eleifend porttitor arcu, id accumsan elit pharetra eget. Mauris luctus velit sit amet est sodales rhoncus. Donec cursus suscipit justo, sed tristique ipsum fermentum nec. Ut tortor ex, ullamcorper varius congue in, efficitur a tellus. Vivamus ut rutrum nisi. Phasellus sit amet enim efficitur, aliquam nulla id, lacinia mauris. Quisque viverra libero ac magna maximus efficitur. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vestibulum mollis eros in tellus fermentum, vitae tristique justo finibus. Sed quis vehicula nibh. Etiam nulla justo, pellentesque id sapien at, semper aliquam arcu. Integer at commodo arcu. Quisque dapibus ut lacus eget vulputate.
-
 % Command-line "screenshot"
 \begin{commandline}
 	\begin{verbatim}
@@ -155,14 +175,10 @@ Fusce eleifend porttitor arcu, id accumsan elit pharetra eget. Mauris luctus vel
 	\end{verbatim}
 \end{commandline}
 
-Vestibulum sodales orci a nisi interdum tristique. In dictum vehicula dui, eget bibendum purus elementum eu. Pellentesque lobortis mattis mauris, non feugiat dolor vulputate a. Cras porttitor dapibus lacus at pulvinar. Praesent eu nunc et libero porttitor malesuada tempus quis massa. Aenean cursus ipsum a velit ultricies sagittis. Sed non leo ullamcorper, suscipit massa ut, pulvinar erat. Aliquam erat volutpat. Nulla non lacus vitae mi placerat tincidunt et ac diam. Aliquam tincidunt augue sem, ut vestibulum est volutpat eget. Suspendisse potenti. Integer condimentum, risus nec maximus elementum, lacus purus porta arcu, at ultrices diam nisl eget urna. Curabitur sollicitudin diam quis sollicitudin varius. Ut porta erat ornare laoreet euismod. In tincidunt purus dui, nec egestas dui convallis non. In vestibulum ipsum in dictum scelerisque.
-
 % Warning text, with a custom title
 \begin{warn}[Notice:]
   In congue risus leo, in gravida enim viverra id. Donec eros mauris, bibendum vel dui at, tempor commodo augue. In vel lobortis lacus. Nam ornare ullamcorper mauris vel molestie. Maecenas vehicula ornare turpis, vitae fringilla orci consectetur vel. Nam pulvinar justo nec neque egestas tristique. Donec ac dolor at libero congue varius sed vitae lectus. Donec et tristique nulla, sit amet scelerisque orci. Maecenas a vestibulum lectus, vitae gravida nulla. Proin eget volutpat orci. Morbi eu aliquet turpis. Vivamus molestie urna quis tempor tristique. Proin hendrerit sem nec tempor sollicitudin.
 \end{warn}
-
-\section{Conclusiones}
 
 %----------------------------------------------------------------------------------------
 
