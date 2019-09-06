@@ -28,8 +28,10 @@ object Main extends App {
     // Read the line (query) the user enters
     query = readLine("query> ")
     // Check if it's the exit command
-    if (query.trim == ":exit")
+    if (query.trim == ":exit") {
+      println("Closing...")
       check = true
+    }
     // Check if the user wants the query options
     else if (query.trim == ":query")
       println(queryOp)
