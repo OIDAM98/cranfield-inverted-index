@@ -30,8 +30,13 @@
 \title{LIS4031: Project \#1} % Title of the assignment
 \title{Boolean Retrieval Model} % Title of the assignment
 
-\author{Dulio Paolo Caggiano Amand\\ \texttt{dulio.caggianoad@udlap.mx}} % Author name and email address
-\author{Oscar Ivan de Alva Martinez\\ \texttt{oscar.dealvamez@udlap.mx}} % Author name and email address
+\author{
+	Dulio Paolo Caggiano Amand\\ 
+	\texttt{dulio.caggianoad@udlap.mx} 
+	\and
+	Oscar Iv\'an de Alva Mart\'inez\\ 
+	\texttt{oscar.dealvamz@udlap.mx}
+} % Author name and email address
 
 \date{Universidad de las Am\'ericas  Puebla --- \today} % University, school and/or department name(s) and a date
 
@@ -47,18 +52,9 @@
 
 \section*{Introduction} % Unnumbered section
 
-In this practice, a research and development focused on the boolean information retrieval model was carried out to define the basic concepts of a retrieval model. Through the development of this project, a dictionary and a posting list were used to implement an inverted index based on the Cranfield collection.
+In this practice, research and development focused on the \textit{Boolean Information Retrieval Model} was carried out to define the basic concepts of a retrieval model. For the development of this project, a dictionary and a posting list were used in order to implement an Inverted iIdex based on the Cranfield collection.
 
-For the implementation of this project, the programming language Scala was used because it provides a concise notation that allows the creation of a Domain Specific Language (DSL) for the ability to solve the problem. Also, Scala has a tight compatibility and interoperability with Java, that allows to take advantage of both the JVM and the libraries of Java. Furthermore, its strict type system has the advantage of allowing the creation of specific types that model the solution of this problem.
-
-% Math equation/formula
-\begin{equation}
-	I = \int_{a}^{b} f(x) \; \text{d}x.
-\end{equation}
-
-\begin{info} % Information block
-	This is an interesting piece of information, to which the reader should pay special attention. Fusce varius orci ac magna dapibus porttitor. In tempor leo a neque bibendum sollicitudin. Nulla pretium fermentum nisi, eget sodales magna facilisis eu. Praesent aliquet nulla ut bibendum lacinia. Donec vel mauris vulputate, commodo ligula ut, egestas orci. Suspendisse commodo odio sed hendrerit lobortis. Donec finibus eros erat, vel ornare enim mattis et.
-\end{info}
+For the implementation of this project, the programming language \textit{Scala} was used as it provides a concise notation that grants the creation of a \textit{Domain Specific Language} (DSL) for the ability to model and create a solution for the problem. Also, \textit{Scala} has a tight compatibility and interoperability with \textit{Java}, that allows to take advantage of both the \textit{Java Virtual Machine} (JVM) and the libraries of \textit{Java}, and at the same time having its own libraries. Furthermore, its strict type system has the advantage of allowing the creation of specific types that model the solution of this problem.
 
 %----------------------------------------------------------------------------------------
 %	PROBLEM 1
@@ -66,86 +62,109 @@ For the implementation of this project, the programming language Scala was used 
 
 \section{Boolean Retrieval Model} % Numbered section
 
-The cranfield collection is based on three main components, the first component is a collection of documents which contains information from different investigations. The second component is the one that contains a set of specific queries for the aforementioned data collection and the third component contains the relevance judgments which are all the factors that are taken to categorize a document as relevant.
+The Cranfield collection is based on three main components, the first one is a collection of documents which contains information from different investigations. The second component is the one that contains a set of specific queries for the aforementioned data collection and the last component contains the relevance judgments which are all the factors that are taken in consideration to categorize a document as relevant.
 
-The documents contained in the cranfield collection generally maintain a structure, where the information contained in the document is specified by means of headings, some examples can be it ".I" to describe the documents ID or ".A" to list the authors. 
+The documents contained in the Cranfield collection generally maintain a structure, where the information contained in the document is specified by means of headings, for example, the usage of the header \textit{.I} to describe the documents ID or \textit{.A} to list the authors of the document.
 
 %------------------------------------------------
 
 \subsection{Parsing the collection}
 
-To transform the words found in the documents, a dedicated parser was created to perform the tokenization of these. This parser has the functionality of creating tokens from the headers established within each document, which allows establishing metadata, in the form of classes, for the words found. 
+To transform the words found in the documents, a dedicated parser was created to perform the tokenization of these. This parser has the functionality of creating tokens from the headers established within each document, which allows establishing metadata, in the form of classes, for the words found.
 
-Also, specific classes were created for the documentation of words and metadata, and a class was established to store the content of a document. These classes represent the different types of header found within the document, these are: document number, author, title, affiliation, and abstract text.
+Also, specific classes were created for the documentation of words and metadata, and a class was established to store the content of a document. These classes represent the different types of header found within the document, these are: document number, author, title, affiliation, and abstract text. The established classes are the following:
 
-On the other hand, the internal structure of a document was established as a list of parsed headers. This is because the documents within the collection do not have a defined structure, which makes it difficult to represent them with only 3one. 
+\begin{lstlisting}[language=Scala]
+sealed trait Header
+case class Id(id: Int) extends Header
+case class Title(text: String) extends Header
+case class Author(fullName: String) extends Header
+case class Adscription(adscription: String) extends Header
+case class Abstract(text: String) extends Header
+case class Document(tags: List[Header])
+	\end{lstlisting}
 
-In order to parse the words, the file was first divided into its documents, which are specified at the beginning with the .I header followed by the document number. This is to allow the identification of the words inside each document easier. Then, each document is divided into the sections previously mentioned, which are identified by the headings. A, .T, .B and .W along with the document number where they are located. Finally, these elements are stored within the Document class to indicate that a document from the collection was parsed along with its contents. 
+On the other hand, the internal structure of a document was established as a List of parsed headers. This decision was made because not all of the documents within the collection have a defined structure, which makes it difficult to generalize and represent them with only one.
 
-% Numbered question, with subquestions in an enumerate environment
-\begin{question}
-	Quisque ullamcorper placerat ipsum. Cras nibh. Morbi vel justo vitae lacus tincidunt ultrices. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+In order to parse the words, the \textbf{cran.all.1400} file was first divided into its documents, which are specified at the beginning with the \textit{.I} header and followed by the document number. This was done in order to allow an easier identification of the words inside each document.
 
-	% Subquestions numbered with letters
-	\begin{enumerate}[(a)]
-		\item Do this.
-		\item Do that.
-		\item Do something else.
-	\end{enumerate}
-\end{question}
-	
+Then, each document was divided into the sections previously mentioned, which are identified by the headings: \textit{.A}, \textit{.T}, \textit{.B} and \textit{.W}, along with the document number where they are located. Finally, these elements were stored within a \textbf{Document} class to indicate that a document from the collection was parsed along with its contents.
+
 %------------------------------------------------
 
 \subsection{Inverted Index}
 
-The dictionary was implemented by using an inverted index which give mainly the advantage of access time once you search for a word. The keys used in the dictionary were all the different words found in the documents  and the values are divided in a tuple, with the first element representing the number of occurrences that the word has in all the processed documents and the second element is a set which contains the IDs of the documents in which the word is found, a set is used to avoid the repetition of IDs.
+The \textit{Inverted Index} was implemented by using a \textit{Dictionary} which gave mainly the advantage of fast access time once you search for a word. The keys used in the dictionary were all the different words found in the documents and the values are stored inside a \textit{Tuple}, with the first element representing the number of occurrences that the word has in all the processed documents and the second element is a \textit{Set} which contains the IDs of the documents in which the word is found. The \textit{Set} data structure is used to avoid the repetition of IDs, taking advantage of this characteristic.
 
-Once the whole file is parsed and the words are tokenized, the list of tokens is processed element by element, adding them to the inverted index. When adding an element to the inverted index, if the index already have that word, the occurrence counter is increased and the document id is added to the set.
-
-\begin{center}
-	\begin{minipage}{0.5\linewidth} % Adjust the minipage width to accomodate for the length of algorithm lines
-		\begin{algorithm}[H]
-			\KwIn{$(a, b)$, two floating-point numbers}  % Algorithm inputs
-			\KwResult{$(c, d)$, such that $a+b = c + d$} % Algorithm outputs/results
-			\medskip
-			\If{$\vert b\vert > \vert a\vert$}{
-				exchange $a$ and $b$ \;
-			}
-			$c \leftarrow a + b$ \;
-			$z \leftarrow c - a$ \;
-			$d \leftarrow b - z$ \;
-			{\bf return} $(c,d)$ \;
-			\caption{\texttt{FastTwoSum}} % Algorithm name
-			\label{alg:fastTwoSum}   % optional label to refer to
-		\end{algorithm}
-	\end{minipage}
-\end{center}
-
+Once the whole file is parsed and the words are tokenized, the list of tokens is processed element by element, adding them to the \textit{Inverted Index}. When adding an element to the \textit{Inverted index} and it is already stored inside of it, then the ocurrence counter is increased and the document id where it appeared is added to the \textit{Set}.
 
 \subsection{Parsing the query}
 
-To parse the query that the user enters in the program, a free context grammar was used based on the grammar used to solve basic algebraic operations. This is because the operators dealing with the model function works the same as the basic mathematical operators of +, * and - of a scale. This grammar is as follows:
+To parse the query that the user enters in the program, a free context grammar was used, since the structure of a query was already defined. This grammar is based upon the grammar used to solve basic algebraic operations. This decision was made because the operators dealing with the \textit{Boolean Retrievl Model} work the same as the basic mathematical operators of \textbf{+}, \textbf{*} and \textbf{- \textit{of a scalar}}. The grammar for a query is defined as follows:
 
 \begin{align*}
-	Expr   & ::= Term (\text{'OR'} Term)*                           \\
+	Expr   & ::= Term (\text{'OR'}  Term)*                          \\
 	Term   & ::= Factor (\text{'AND'} Factor)*                      \\
 	Factor & ::= [\text{'NOT'}] (Word | \text{'('} Expr \text{')'}) \\
 	Word   & ::= [a-zA-Z]
 \end{align*}
 
-This allows to be able to analyze a query through the precedence of the AND, OR and NOT operators, as well as the parentheses. To make the parsing of the query we used the library of Scala Parser Combinators, which allows us to represent in code a grammar free of context and program the cases of these. The parser is in charge of identifying the specified grammar cases and asking the Boolean Retrieval Model to carry out the specified operation. 
+This definition allows the parser to be able to analyze a query through the precedence of the \textbf{AND}, \textbf{OR} and \textbf{NOT} operators, as well as the parentheses. To make the parsing of the query, the Scala Parser Combinators library was used, since it allows to represent a grammar free of context in code and define the procedurements while parsing. This library uses its own DSL to both model the grammar and the Succes case if the expression is a match. The following code represents the way to express the \textit{Expr} case of the grammar:
+
+\begin{lstlisting}[language=Scala]
+def expr: Parser[BinaryArray] = term ~ rep("or" ~> term) ^^ {
+    case expr ~ list =>
+      list.foldLeft(expr) {
+        case (x, y) => x | y // Make the OR operator of the terms
+      }
+  }
+		\end{lstlisting}
+
+The \textit{CranParser} is in charge of identifying the specified grammar cases and asking the \textit{Boolean Retrieval Model} to carry out a specified operation. When the parser finds a word in query, it calls the \textbf{convertToBinaryArray(word)} method of the \textit{Boolean Retrieval Model} in order to tokenize the word based upon the following method:
+
+\begin{lstlisting}[language=Scala]
+private def word: Parser[BinaryArray] =
+    """[a-zA-z]+""".r ^^ (brm.convertToBinaryArray(_))
+			\end{lstlisting}
 
 \subsection{Boolean Retrieval Model}
 
-When the words are parsed inside the query, they are transformed into a BinaryArray class, which is an array of shorts of the size of the number of processed documents, which limits the data you can use in the array to 0 and 1 to represent in a binary way the occurrence of the words in the documents, representing with a 1 in the position i if the element is in the document i and if it is not found it will be represented with a 0. 
+When the words are parsed inside the query, they are transformed into a \textit{BinaryArray} class, which is an \textit{Array} of \textit{Shorts} of the size of the number of processed documents, being 1400 for the Cranfield documents. The \textit{BinaryArray} limits the data that can be used in the array to 0 and 1 in order to represent the ocurrence of a word inside the different documents in a binary way. This representation consists of a 1 in the position \textbf{i} if the element is in the \textbf{document i} and if it is not found inside \textbf{document i} then will be represented with a 0. The following method is in charge to convert a word to its \textit{BinaryArray} representation:
 
-After each word is represented as a BinaryArray, if the query contains the key words AND, OR or NOT, the corresponding binary operation is performed between two of the arrays, based on the precedence of operations previously defined in the parser of the query. The resulting array from performing the binary operations, will be the result of the query, described in the indexes where a 1 is maintained, as the ID of the document that is considered relevant for the search. 
+\begin{lstlisting}[language=Scala]
+def convertToBinaryArray(word: String) = {
+    index.get(word) match {
+      case Some(value) =>
+        value match {
+          case (_, documents) =>
+            documents
+              .map(_.id)
+              .foldLeft(BinaryArray.fill(index.numberOfDocs)(0)) {                
+                case (acc, index) => acc.update(index - 1, 1)
+              }
+        }
 
+      case None => BinaryArray.fill(index.numberOfDocs)(0)
+    }
+  }
+\end{lstlisting}
 
-% Numbered question, with an optional title
-\begin{question}[\itshape (with optional title)]
-	In congue risus leo, in gravida enim viverra id. Donec eros mauris, bibendum vel dui at, tempor commodo augue. In vel lobortis lacus. Nam ornare ullamcorper mauris vel molestie. Maecenas vehicula ornare turpis, vitae fringilla orci consectetur vel. Nam pulvinar justo nec neque egestas tristique. Donec ac dolor at libero congue varius sed vitae lectus. Donec et tristique nulla, sit amet scelerisque orci. Maecenas a vestibulum lectus, vitae gravida nulla. Proin eget volutpat orci. Morbi eu aliquet turpis. Vivamus molestie urna quis tempor tristique. Proin hendrerit sem nec tempor sollicitudin.
-\end{question}
+The \textbf{convertToBinaryArray(word)} method is in charge to convert a word to a \textit{BinaryArray} making the following steps:
+
+\begin{enumerate}[(i)]
+	\item Get the word from the \textit{Inverted Index}.
+	\item If the word is a key in the index:
+	\begin{enumerate}[(a)]
+		\item Get its documents where it appears, its \textit{Set[Id]}.
+		\item Generate a new \textit{BinaryArray} that is empty (all its indexes are 0).
+		\item Start filling this array with 1's in the index where a word appears.
+	\end{enumerate}
+	\item If its not in the index: return an empty \textit{BinaryArray}, since its not in any document.
+\end{enumerate}
+
+After each word is represented as a \textit{BinaryArray}, if the query contains the key words \textit{AND}, \textit{OR} or \textit{NOT}, then the corresponding binary operation is performed between the two arrays, based on the precedence of operations previously defined in the grammar of the \textit{CranParser} that tokenizes the query.
+
+The resulting array from performing the binary operations, will be the result of the query. The positions that are marked with a 1 are the number of the documents that are the result of the user's query, being the indexes that are considered relevant for the search.
 
 %----------------------------------------------------------------------------------------
 %	PROBLEM 2
@@ -153,32 +172,11 @@ After each word is represented as a BinaryArray, if the query contains the key w
 
 \section{Conclusions}
 
-Through out the project, the steps for the creation of a retrieval model were identified and developed. In the same way, the impact of the data structures and the importance that they have within the development of a retrieval model were observed, finally the methods to parse of the documents and queries to obtain and process information from external sources with the implications that they entail were analyzed.
+Through out the project, the steps for the creation of a retrieval model were identified and developed. Starting from the parsing of the collections, to the implementation of both an \textit{Inverted Index} and a \textit{Boolean Retrieval Model}.
 
-% File contents
-\begin{file}[hello.py]
-\begin{lstlisting}[language=Python]
-#! /usr/bin/python
+In the same way, the impact of the data structures and the importance that they have within the development of a retrieval model were observed. Especially in both effectiveness and efficiency of a retrieval model.
 
-import sys
-sys.stdout.write("Hello World!\n")
-\end{lstlisting}
-\end{file}
-
-% Command-line "screenshot"
-\begin{commandline}
-	\begin{verbatim}
-		$ chmod +x hello.py
-		$ ./hello.py
-
-		Hello World!
-	\end{verbatim}
-\end{commandline}
-
-% Warning text, with a custom title
-\begin{warn}[Notice:]
-  In congue risus leo, in gravida enim viverra id. Donec eros mauris, bibendum vel dui at, tempor commodo augue. In vel lobortis lacus. Nam ornare ullamcorper mauris vel molestie. Maecenas vehicula ornare turpis, vitae fringilla orci consectetur vel. Nam pulvinar justo nec neque egestas tristique. Donec ac dolor at libero congue varius sed vitae lectus. Donec et tristique nulla, sit amet scelerisque orci. Maecenas a vestibulum lectus, vitae gravida nulla. Proin eget volutpat orci. Morbi eu aliquet turpis. Vivamus molestie urna quis tempor tristique. Proin hendrerit sem nec tempor sollicitudin.
-\end{warn}
+Finally, the methods to parse both the documents of the \textit{Cranfield} collection and the user's queries were analyzed. This was in order to process and obtain information from the sources of the Information Retrieval Model, along with analyzing the implications that they entail.
 
 %----------------------------------------------------------------------------------------
 
