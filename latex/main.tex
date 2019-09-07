@@ -153,13 +153,19 @@ The \textbf{convertToBinaryArray(word)} method is in charge to convert a word to
 
 \begin{enumerate}[(i)]
 	\item Get the word from the \textit{Inverted Index}.
-	\item If the word is a key in the index:
+	\begin{enumerate}[(i)]
+		\item If the word is a key in the index:
 	\begin{enumerate}[(a)]
 		\item Get its documents where it appears, its \textit{Set[Id]}.
 		\item Generate a new \textit{BinaryArray} that is empty (all its indexes are 0).
 		\item Start filling this array with 1's in the index where a word appears.
 	\end{enumerate}
-	\item If its not in the index: return an empty \textit{BinaryArray}, since its not in any document.
+	\item If its not in the index:
+	\begin{enumerate}[(a)]
+		\item Return an empty \textit{BinaryArray}, since it is not in any document.
+		
+	\end{enumerate}
+	\end{enumerate}
 \end{enumerate}
 
 After each word is represented as a \textit{BinaryArray}, if the query contains the key words \textit{AND}, \textit{OR} or \textit{NOT}, then the corresponding binary operation is performed between the two arrays, based on the precedence of operations previously defined in the grammar of the \textit{CranParser} that tokenizes the query.

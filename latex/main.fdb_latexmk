@@ -1,8 +1,8 @@
 # Fdb version 3
-["pdflatex"] 1567825307 "/home/husky/Documents/7moSem/inverseindex/latex/main.tex" "/home/husky/Documents/7moSem/inverseindex/latex/main.pdf" "main" 1567825309
+["pdflatex"] 1567825683 "/home/husky/Documents/7moSem/inverseindex/latex/main.tex" "/home/husky/Documents/7moSem/inverseindex/latex/main.pdf" "main" 1567825685
   "/etc/texmf/web2c/texmf.cnf" 1567793517 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/husky/Documents/7moSem/inverseindex/latex/main.aux" 1567825308 582 58a4d6e0838b48d4e6cb4fd27615cd93 ""
-  "/home/husky/Documents/7moSem/inverseindex/latex/main.tex" 1567825307 12412 309476aedfe6690a3c1db841d0e46ff6 ""
+  "/home/husky/Documents/7moSem/inverseindex/latex/main.aux" 1567825684 582 58a4d6e0838b48d4e6cb4fd27615cd93 ""
+  "/home/husky/Documents/7moSem/inverseindex/latex/main.tex" 1567825682 12508 8ec46ad2cc8574b553b5868976d8676f ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/xcharter/xch_tuu2ww.enc" 1528060576 3134 ffda81628686473fb93def2a46f20d83 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmr8t.tfm" 1480098689 6672 e3ab9e37e925f3045c9005e6d1473d56 ""
@@ -207,12 +207,12 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1535076666 32752 ce45b90d2fda49befaa367e6f5986072 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1567797815 2885931 54a0ba4e594f83ea336338297f8ab976 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1567797836 4219390 2187916746c34eb2405acd23bb51e536 ""
-  "main.aux" 1567825308 582 58a4d6e0838b48d4e6cb4fd27615cd93 ""
-  "main.tex" 1567825307 12412 309476aedfe6690a3c1db841d0e46ff6 ""
+  "main.aux" 1567825684 582 58a4d6e0838b48d4e6cb4fd27615cd93 ""
+  "main.tex" 1567825682 12508 8ec46ad2cc8574b553b5868976d8676f ""
   "structure.tex" 315550800 6570 2bb0ee94d7aeeb8eca32600e3ac422ab ""
   (generated)
-  "/home/husky/Documents/7moSem/inverseindex/latex/main.log"
-  "main.pdf"
-  "main.log"
   "main.aux"
+  "/home/husky/Documents/7moSem/inverseindex/latex/main.log"
   "/home/husky/Documents/7moSem/inverseindex/latex/main.pdf"
+  "main.log"
+  "main.pdf"
